@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ club.name }} - ClubConnect{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h1>{{ club.name }}</h1>
+        <p>{{ club.description }}</p>
+        <p><strong>Founded:</strong> {{ club.founded_date|date:"F j, Y" }}</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2>Members</h2>
+            {% for member in members %}
+                <div class="member-item">
+                    <h3>{{ member.name }}</h3>
+                    <p><strong>Role:</strong> {{ member.role }}</p>
+                    <p><strong>Joined:</strong> {{ member.join_date|date:"F j, Y" }}</p>
+                </div>
+            {% empty %}
+                <p>No members available.</p>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <h2>Upcoming Events</h2>
+            {% for event in events %}
+                <div class="event-item">
+                    <h3>{{ event.title }}</h3>
+                    <p>{{ event.description }}</p>
+                    <p><strong>Date:</strong> {{ event.date|date:"F j, Y" }}</p>
+                </div>
+            {% empty %}
+                <p>No upcoming events.</p>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <h2>Announcements</h2>
+            {% for announcement in announcements %}
+                <div class="announcement-item">
+                    <h3>{{ announcement.title }}</h3>
+                    <p>{{ announcement.message }}</p>
+                    <p><strong>Posted:</strong> {{ announcement.posted_on|date:"F j, Y" }}</p>
+                </div>
+            {% empty %}
+                <p>No announcements available.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %} 

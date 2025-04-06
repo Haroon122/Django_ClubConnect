@@ -1,0 +1,251 @@
+{% extends 'clubapp/admin/base_admin.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="fas fa-tachometer-alt"></i> Welcome to ClubConnect Admin Dashboard</h2>
+        {% if is_superuser %}
+        <p class="text-muted">As a superuser, you have access to all clubs and their activities.</p>
+        {% else %}
+        <p class="text-muted">Manage your clubs and their activities from here.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Quick Action Buttons -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0"><i class="fas fa-bolt"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="{% url 'manage_clubs' %}" class="quick-action-btn btn btn-primary">
+                            <i class="fas fa-users"></i>
+                            <span>Add New Club</span>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'manage_members' %}" class="quick-action-btn btn btn-success">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Add New Member</span>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'manage_events' %}" class="quick-action-btn btn btn-info">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Add New Event</span>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{% url 'manage_announcements' %}" class="quick-action-btn btn btn-warning">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>Add New Announcement</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-users"></i> Total Clubs</h5>
+                <p class="card-text display-4">{{ clubs.count }}</p>
+                <a href="{% url 'manage_clubs' %}" class="btn btn-light">
+                    <i class="fas fa-cog"></i> Manage Clubs
+                </a>
+                <i class="fas fa-users"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-user-friends"></i> Total Members</h5>
+                <p class="card-text display-4">{{ members.count }}</p>
+                <a href="{% url 'manage_members' %}" class="btn btn-light">
+                    <i class="fas fa-cog"></i> Manage Members
+                </a>
+                <i class="fas fa-user-friends"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-calendar-alt"></i> Total Events</h5>
+                <p class="card-text display-4">{{ events.count }}</p>
+                <a href="{% url 'manage_events' %}" class="btn btn-light">
+                    <i class="fas fa-cog"></i> Manage Events
+                </a>
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-bullhorn"></i> Total Announcements</h5>
+                <p class="card-text display-4">{{ announcements.count }}</p>
+                <a href="{% url 'manage_announcements' %}" class="btn btn-light">
+                    <i class="fas fa-cog"></i> Manage Announcements
+                </a>
+                <i class="fas fa-bullhorn"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Data -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0"><i class="fas fa-users"></i> Your Clubs</h5>
+                <a href="{% url 'manage_clubs' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Add New Club
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for club in clubs %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1"><i class="fas fa-users"></i> {{ club.name }}</h6>
+                                <small class="text-muted">Founded: {{ club.founded_date }}</small>
+                            </div>
+                            <div>
+                                <a href="{% url 'edit_club' club.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{% url 'club_detail' club.id %}" class="btn btn-sm btn-outline-info">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="list-group-item text-center">
+                        <p class="mb-0">No clubs found. <a href="{% url 'manage_clubs' %}">Create your first club</a></p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0"><i class="fas fa-calendar-alt"></i> Upcoming Events</h5>
+                <a href="{% url 'manage_events' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Add New Event
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for event in events %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1"><i class="fas fa-calendar-check"></i> {{ event.title }}</h6>
+                                <small class="text-muted">{{ event.club.name }} - {{ event.date }}</small>
+                            </div>
+                            <div>
+                                <a href="{% url 'edit_event' event.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="list-group-item text-center">
+                        <p class="mb-0">No upcoming events. <a href="{% url 'manage_events' %}">Add your first event</a></p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0"><i class="fas fa-bullhorn"></i> Recent Announcements</h5>
+                <a href="{% url 'manage_announcements' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Add New Announcement
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for announcement in announcements %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1"><i class="fas fa-bullhorn"></i> {{ announcement.title }}</h6>
+                                <small class="text-muted">{{ announcement.club.name }} - {{ announcement.posted_on }}</small>
+                            </div>
+                            <div>
+                                <a href="{% url 'edit_announcement' announcement.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="list-group-item text-center">
+                        <p class="mb-0">No announcements. <a href="{% url 'manage_announcements' %}">Add your first announcement</a></p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0"><i class="fas fa-user-friends"></i> Club Members</h5>
+                <a href="{% url 'manage_members' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Add New Member
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for member in members %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1"><i class="fas fa-user"></i> {{ member.name }}</h6>
+                                <small class="text-muted">{{ member.club.name }} - {{ member.role }}</small>
+                            </div>
+                            <div>
+                                <a href="{% url 'edit_member' member.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="list-group-item text-center">
+                        <p class="mb-0">No members found. <a href="{% url 'manage_members' %}">Add your first member</a></p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

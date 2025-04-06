@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Clubs - ClubConnect{% endblock %}
+
+{% block content %}
+    <h1>University Clubs</h1>
+    <div class="grid">
+        {% for club in clubs %}
+            <div class="card">
+                <h2>{{ club.name }}</h2>
+                <p>{{ club.description }}</p>
+                <p><strong>Founded:</strong> {{ club.founded_date|date:"F j, Y" }}</p>
+                <a href="{% url 'club_detail' club.id %}" class="btn">View Details</a>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No clubs available at the moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %} 
+
+

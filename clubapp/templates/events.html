@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Events - ClubConnect{% endblock %}
+
+{% block content %}
+    <h1>Upcoming Events</h1>
+    <div class="grid">
+        {% for event in events %}
+            <div class="card">
+                <h2>{{ event.title }}</h2>
+                <p><strong>Club:</strong> <a href="{% url 'club_detail' event.club.id %}">{{ event.club.name }}</a></p>
+                <p>{{ event.description }}</p>
+                <p><strong>Date:</strong> {{ event.date|date:"F j, Y" }}</p>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No upcoming events at the moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %} 

@@ -1,0 +1,26 @@
+{% extends 'clubapp/admin/base_admin.html' %}
+
+{% block title %}Delete Announcement{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Delete Announcement</h5>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete the announcement "{{ announcement.title }}" from {{ announcement.club.name }}?</p>
+                <p class="text-danger">This action cannot be undone!</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'manage_announcements' %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-danger">Delete Announcement</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

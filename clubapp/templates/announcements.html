@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Announcements - ClubConnect{% endblock %}
+
+{% block content %}
+    <h1>Latest Announcements</h1>
+    <div class="grid">
+        {% for announcement in announcements %}
+            <div class="card">
+                <h2>{{ announcement.title }}</h2>
+                <p><strong>Club:</strong> <a href="{% url 'club_detail' announcement.club.id %}">{{ announcement.club.name }}</a></p>
+                <p>{{ announcement.message }}</p>
+                <p><strong>Posted:</strong> {{ announcement.posted_on|date:"F j, Y" }}</p>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>No announcements available at the moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %} 

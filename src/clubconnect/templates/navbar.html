@@ -1,0 +1,11 @@
+<!-- Add this to your existing navbar.html, usually in the navigation section -->
+
+{% if user.is_authenticated %}
+    <!-- Other navigation items -->
+    
+    {% if user.adminprofile.is_site_admin %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+    </li>
+    {% endif %}
+{% endif %}

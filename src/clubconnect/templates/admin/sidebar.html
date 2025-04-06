@@ -1,0 +1,11 @@
+<div class="list-group">
+    <a href="{% url 'admin_dashboard' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+        Dashboard
+    </a>
+    <a href="{% url 'admin_manage_clubs' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'admin_manage_clubs' %}active{% endif %}">
+        Manage Clubs
+    </a>
+    <a href="{% url 'admin_manage_users' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'admin_manage_users' %}active{% endif %}">
+        Manage Users
+    </a>
+</div>
